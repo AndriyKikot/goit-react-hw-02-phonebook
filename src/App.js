@@ -1,7 +1,7 @@
 import './App.css';
 import { Component } from 'react';
 
-// import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
 
 class App extends Component {
   state = {
@@ -9,35 +9,87 @@ class App extends Component {
     name: '',
   };
 
-  handleNameChange = event => {
-    this.setState({ name: event.currentTarget.value });
+  addContact = name => {
+    const contact = {
+      id: uuidv4(),
+      name: name,
+    };
+
+    this.setState(prevState => ({
+      contacts: [contact, ...prevState.contacts],
+    }));
   };
 
-  handleSubmit = e => {
-    e.preventDefault();
-    console.log(this.state);
+  // handleChange = event => {
+  //   const { name, value } = event.currentTarget;
+
+  //   this.setState({ [name]: value, });
+  // };
+
+  handleChange = event => {
+    const { name, value } = event.currentTarget;
+
+    this.setState({ [name]: value });
+  };
+
+  handleSubmit = evt => {
+    evt.preventDefault();
+
+    this.addContact(this.state.name);
+
+    this.reset();
+  };
+
+  reset = () => {
+    this.setState({ name: '' });
+  };
+
+  // formSubmitHundler = data => {
+  //   console.log(data);
+  // }
+
+  deleteContact = contactId => {
+    this.setState(prevState => ({
+      contacts: prevState.contacts.filter(contact => contact.id !== contactId),
+    }));
   };
 
   render() {
+    // const { name } = this.state;
+
     return (
       <div className="App">
-        <form action="" onSubmit={this.handleSubmit}>
+        <form onSubmit={this.handleSubmit}>
           <label htmlFor="">
             Name
             <input
               type="text"
               value={this.state.name}
               name="name"
-              onChange={this.handleNameChange}
+              onChange={this.handleChange}
             />
           </label>
 
           <button type="submit">Add contact</button>
 
-          <label htmlFor="">
+          {/* <label htmlFor="">
             Number
-            <input type="text" />
-          </label>
+            <input
+              type="text"
+              name="number"
+              onChange={this.handleChange} />
+          </label> */}
+          <p>Contacts</p>
+          <ul>
+            {this.state.contacts.map(contact => (
+              <li key={contact.id}>
+                <p>{contact.name}</p>
+                <button onClick={() => this.deleteContact(contact.id)}>
+                  Delete
+                </button>
+              </li>
+            ))}
+          </ul>
         </form>
       </div>
     );
