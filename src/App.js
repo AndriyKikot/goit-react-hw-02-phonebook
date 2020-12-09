@@ -5,7 +5,13 @@ import { v4 as uuidv4 } from 'uuid';
 
 class App extends Component {
   state = {
-    contacts: [],
+    contacts: [
+      { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
+      { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
+      { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
+      { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
+    ],
+    filter: '',
     name: '',
     number: '',
   };
@@ -56,8 +62,22 @@ class App extends Component {
     }));
   };
 
+  changeFilter = event => {
+    this.setState({ filter: event.currentTarget.value });
+  };
+
+  getFilterContacts = () => {
+    const { filter, contacts } = this.state;
+    const normalizedFilter = filter.toLowerCase();
+    return contacts.filter(contact =>
+      contact.name.toLowerCase().includes(normalizedFilter),
+    );
+  };
+
   render() {
-    // const { name } = this.state;
+    const { name, number, filter } = this.state;
+
+    const filterContacts = this.getFilterContacts();
 
     return (
       <div className="App">
@@ -66,24 +86,38 @@ class App extends Component {
             Name
             <input
               type="text"
-              value={this.state.name}
+              value={name}
               name="name"
+              onChange={this.handleChange}
+            />
+          </label>
+
+          <label htmlFor="">
+            Number
+            <input
+              type="text"
+              value={number}
+              name="number"
               onChange={this.handleChange}
             />
           </label>
 
           <button type="submit">Add contact</button>
 
+          <h2>Contacts</h2>
           <label htmlFor="">
-            Number
+            Find contact by name
             <input
               type="text"
-              value={this.state.number}
-              name="number"
-              onChange={this.handleChange}
+              value={filter}
+              name="filter"
+              onChange={this.changeFilter}
             />
+            <div className="">
+              {filterContacts.map(contact => contact.name)}
+            </div>
           </label>
-          <p>Contacts</p>
+
           <ul>
             {this.state.contacts.map(contact => (
               <li key={contact.id}>
