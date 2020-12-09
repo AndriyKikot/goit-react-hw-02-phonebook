@@ -7,12 +7,14 @@ class App extends Component {
   state = {
     contacts: [],
     name: '',
+    number: '',
   };
 
-  addContact = name => {
+  addContact = (name, number) => {
     const contact = {
       id: uuidv4(),
       name: name,
+      number: number,
     };
 
     this.setState(prevState => ({
@@ -35,13 +37,13 @@ class App extends Component {
   handleSubmit = evt => {
     evt.preventDefault();
 
-    this.addContact(this.state.name);
+    this.addContact(this.state.name, this.state.number);
 
     this.reset();
   };
 
   reset = () => {
-    this.setState({ name: '' });
+    this.setState({ name: '', number: '' });
   };
 
   // formSubmitHundler = data => {
@@ -72,18 +74,23 @@ class App extends Component {
 
           <button type="submit">Add contact</button>
 
-          {/* <label htmlFor="">
+          <label htmlFor="">
             Number
             <input
               type="text"
+              value={this.state.number}
               name="number"
-              onChange={this.handleChange} />
-          </label> */}
+              onChange={this.handleChange}
+            />
+          </label>
           <p>Contacts</p>
           <ul>
             {this.state.contacts.map(contact => (
               <li key={contact.id}>
-                <p>{contact.name}</p>
+                <p>
+                  {contact.name}: {contact.number}
+                </p>
+
                 <button onClick={() => this.deleteContact(contact.id)}>
                   Delete
                 </button>
