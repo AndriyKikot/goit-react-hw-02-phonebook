@@ -56,7 +56,7 @@ class App extends Component {
       <div className="App">
         <h1>Phonebook</h1>
         <ContactForm
-          addContact={this.addContact}
+          onAddContact={this.addContact}
           checkingContactName={this.checkingContactName}
         />
 

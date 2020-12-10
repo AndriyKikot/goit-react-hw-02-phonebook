@@ -1,7 +1,7 @@
 import { Component } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 // import s from './ContactForm.module.css';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 
 class ContactForm extends Component {
   state = {
@@ -25,7 +25,7 @@ class ContactForm extends Component {
       alert(`${name} is already in contacts`);
     } else {
       const newContact = { id: uuidv4(), name, number };
-      this.props.addContact(newContact);
+      this.props.onAddContact(newContact);
     }
 
     this.reset();
@@ -47,16 +47,18 @@ class ContactForm extends Component {
             value={name}
             name="name"
             onChange={this.handleChange}
+            required
           />
         </label>
 
         <label htmlFor="">
           Number
           <input
-            type="text"
+            type="tel"
             value={number}
             name="number"
             onChange={this.handleChange}
+            required
           />
         </label>
 
@@ -65,5 +67,9 @@ class ContactForm extends Component {
     );
   }
 }
+
+ContactForm.propTypes = {
+  onAddContact: PropTypes.func.isRequired,
+};
 
 export default ContactForm;
