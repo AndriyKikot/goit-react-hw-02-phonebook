@@ -1,6 +1,5 @@
 import './App.css';
 import { Component } from 'react';
-import { v4 as uuidv4 } from 'uuid';
 
 import ContactForm from './components/ContactForm';
 import Filter from './components/Filter';
@@ -17,21 +16,15 @@ class App extends Component {
     filter: '',
   };
 
-  addContact = (name, number) => {
-    const contact = {
-      id: uuidv4(),
-      name,
-      number,
-    };
-
+  addContact = contact => {
     this.setState(({ contacts }) => ({
-      contacts: [contact, ...contacts],
+      contacts: [...contacts, contact],
     }));
   };
 
   deleteContact = contactId => {
-    this.setState(prevState => ({
-      contacts: prevState.contacts.filter(contact => contact.id !== contactId),
+    this.setState(({ contacts }) => ({
+      contacts: [...contacts.filter(contact => contact.id !== contactId)],
     }));
   };
 
@@ -48,6 +41,12 @@ class App extends Component {
     );
   };
 
+  checkingContactName = verificationName => {
+    const { contacts } = this.state;
+    const normalizedName = verificationName.toLowerCase();
+    return contacts.find(({ name }) => name.toLowerCase() === normalizedName);
+  };
+
   render() {
     const { filter } = this.state;
 
@@ -56,7 +55,10 @@ class App extends Component {
     return (
       <div className="App">
         <h1>Phonebook</h1>
-        <ContactForm onSubmit={this.addContact} />
+        <ContactForm
+          addContact={this.addContact}
+          checkingContactName={this.checkingContactName}
+        />
 
         <h2>Contacts</h2>
         <Filter value={filter} onChange={this.changeFilter} />

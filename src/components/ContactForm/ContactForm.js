@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 // import s from './ContactForm.module.css';
 // import PropTypes from 'prop-types';
 
@@ -14,10 +15,18 @@ class ContactForm extends Component {
     this.setState({ [name]: value });
   };
 
-  handleSubmit = evt => {
-    evt.preventDefault();
+  handleSubmit = event => {
+    event.preventDefault();
 
-    this.props.onSubmit(this.state.name, this.state.number);
+    const { name, number } = this.state;
+    const duplicateName = this.props.checkingContactName(name);
+
+    if (duplicateName) {
+      alert(`${name} is already in contacts`);
+    } else {
+      const newContact = { id: uuidv4(), name, number };
+      this.props.addContact(newContact);
+    }
 
     this.reset();
   };
