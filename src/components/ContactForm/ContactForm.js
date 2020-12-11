@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-// import s from './ContactForm.module.css';
+import s from './ContactForm.module.css';
 import PropTypes from 'prop-types';
 
 class ContactForm extends Component {
@@ -39,10 +39,12 @@ class ContactForm extends Component {
     const { name, number } = this.state;
 
     return (
-      <form onSubmit={this.handleSubmit}>
-        <label htmlFor="">
+      <form className={s.contact__form} onSubmit={this.handleSubmit}>
+        <label className={s.contact__label}>
           Name
           <input
+            className={s.contact__input}
+            placeholder="Enter name..."
             type="text"
             value={name}
             name="name"
@@ -51,9 +53,11 @@ class ContactForm extends Component {
           />
         </label>
 
-        <label htmlFor="">
+        <label className={s.contact__label}>
           Number
           <input
+            className={s.contact__input}
+            placeholder="Enter number..."
             type="tel"
             value={number}
             name="number"
@@ -62,7 +66,9 @@ class ContactForm extends Component {
           />
         </label>
 
-        <button type="submit">Add contact</button>
+        <button className={s.contact__btn} type="submit">
+          Add contact
+        </button>
       </form>
     );
   }

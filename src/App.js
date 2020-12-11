@@ -1,6 +1,7 @@
-import './App.css';
 import { Component } from 'react';
+import './App.css';
 
+import Container from './components/Container';
 import ContactForm from './components/ContactForm';
 import Filter from './components/Filter';
 import ContactList from './components/ContactList';
@@ -54,18 +55,20 @@ class App extends Component {
 
     return (
       <div className="App">
-        <h1>Phonebook</h1>
-        <ContactForm
-          onAddContact={this.addContact}
-          checkingContactName={this.checkingContactName}
-        />
+        <Container>
+          <h1 className="main__title">Phonebook</h1>
+          <ContactForm
+            onAddContact={this.addContact}
+            checkingContactName={this.checkingContactName}
+          />
 
-        <h2>Contacts</h2>
-        <Filter value={filter} onChange={this.changeFilter} />
-        <ContactList
-          contacts={filterContacts}
-          onDeleteContact={this.deleteContact}
-        />
+          <h2 className="section__title">Contacts</h2>
+          <Filter value={filter} onChange={this.changeFilter} />
+          <ContactList
+            contacts={filterContacts}
+            onDeleteContact={this.deleteContact}
+          />
+        </Container>
       </div>
     );
   }
